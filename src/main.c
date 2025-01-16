@@ -348,21 +348,20 @@ void json_log_task(void *pvParameters) {
 
         // Format the sensor values into a string
         snprintf(log_string, sizeof(log_string),
-                 "Brightness Sensor: %d, Humidity Sensor: %.2f%%, "
-                 "Moisture Sensor: %d%%, Temperature Sensor: %.2f°C, "
-                 "Pump State: %s, Water Level Sensor: %d%%",
-                 light_level, humidity, soil_moisture_percentage,
-                 temperature, pump_state, water_tank_level);
+         "{\"brightness_sensor\": %d, \"humidity_sensor\": %.2f, "
+         "\"moisture_sensor\": %d, \"temperature_sensor\": %.2f, "
+         "\"pump_state\": \"%s\", \"water_level_sensor\": %d}",
+         light_level, humidity, soil_moisture_percentage,
+         temperature, pump_state, water_tank_level);
+
 
         // Log the string
-        ESP_LOGI("STRING_LOG", "%s", log_string);
+        ESP_LOGI("JSON_LOG", "%s", log_string);
 
         // Wait for 5 seconds before logging again
         vTaskDelay(pdMS_TO_TICKS(5000));
     }
 }
-
-
 
 // Main application entry point
 void app_main(void) {
@@ -388,7 +387,7 @@ void app_main(void) {
         // Create tasks for sensors and pump control
         xTaskCreate(sensor_task, "sensor_task", 4096, NULL, 5, NULL);
         xTaskCreate(pump_control_task, "pump_control_task", 2048, NULL, 5, NULL);
-        xTaskCreate(json_log_task, "json_log_task", 2048, NULL, 5, NULL);
+        xTaskCreate(json_log_task, "json_log_task", 4096, NULL, 5, NULL);
     } else {
         ESP_LOGE(TAG_SENSORS, "Could not find Si7021 at address 0x%02X", SI7021_ADDR);
     }
