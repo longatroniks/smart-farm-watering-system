@@ -1,15 +1,32 @@
+// telemetry_client.h
 #ifndef TELEMETRY_CLIENT_H
 #define TELEMETRY_CLIENT_H
 
+#include "esp_err.h"
 #include <stdbool.h>
 
-// Initialize telemetry client - must be called after WiFi is connected
-void telemetry_client_init(void);
+/**
+ * @brief Initialize the telemetry client
+ * @return ESP_OK on success
+ */
+esp_err_t telemetry_client_init(void);
 
-// Publish sensor data to ThingsBoard
+/**
+ * @brief Publish telemetry data to ThingsBoard
+ * @param data JSON-formatted string containing telemetry data
+ * @return true if published successfully
+ */
 bool telemetry_client_publish(const char *data);
 
-// Check if connected to MQTT broker
+/**
+ * @brief Check if telemetry client is connected
+ * @return true if connected
+ */
 bool telemetry_client_is_connected(void);
 
-#endif /* TELEMETRY_CLIENT_H */
+/**
+ * @brief Deinitialize the telemetry client
+ */
+void telemetry_client_deinit(void);
+
+#endif // TELEMETRY_CLIENT_H

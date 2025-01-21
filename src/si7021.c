@@ -1,4 +1,3 @@
-// si7021.c
 #include "si7021.h"
 #include "esp_log.h"
 #include "freertos/FreeRTOS.h"
